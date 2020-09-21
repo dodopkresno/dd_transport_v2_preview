@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Filter 1 --> 
+    <record id="transportation_order_filter" model="ir.ui.view">
+        <field name="name">Transportation Order Filter</field>
+        <field name="model">transportation.order</field>
+        <field name="arch" type="xml">
+            <search string="Transport Filter">
+                <filter string="State"
+                    name="state"
+                    domain="[('state','!=','pod')]" />
+            </search>
+        </field>
+    </record>
+    
+    <!-- Tree view for "transportation.order" -->
+    <record id="transportation_order_tree" model="ir.ui.view">
+        <field name="name">Transportation Order Tree</field>
+        <field name="model">transportation.order</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Trans Order" decoration-it="state == 'draft'" decoration-info="state == 'appr'" decoration-bf="state == 'inprg'" decoration-success="state == 'pod'" >
+                <field name="name" />
+                <field name="customer_id" />
+                <field name="service_id" />
+                <field name="route_id" />
+                <field name="to_name" />
+                <field name="to_phone" />
+                <field name="to_address" />                                                
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Form view for "transportation.order" -->
+    <record id="transportation_order_form" model="ir.ui.view">
+        <field name="name">Transportation Order Form</field>
+        <field name="model">transportation.order</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="model_form" create="1" delete="1" edit="1">
+                <header>
+                    <button name="confirm_approve" string="Approve" states="draft" class="fa fa-check"
+                            type="object" />
+                    <button name="action_inprogress" string="To Progress" states="appr" class="oe_highlight"
+                            type="object" />
+                    <button name="action_confirm_pod" string="Confirm POD" states="inprg" class="oe_highlight" 
+                            type="object" />
+                    <field name="state" widget="statusbar" readonly="1" statusbar_visible="appr,inprg,pod"/>        
+                </header>
+                <sheet>
+                    <div class="oe_right oe_button_box" style="width: 300px;" name="buttons">
+                        <button name='action_view_sale_order' class="oe_stat_button" type="object" icon="fa-pencil-square-o" >
+                            <field string="Sale Order" name="so_count" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group colspan="4" col="4">
+                        <separator string="Transport Order" colspan="4" />
+                        <field name="to_name" placeholder="Consignee Name" 
+                                attrs="{'readonly': [('state','!=','draft')]}" />
+                        <field name="name" />
+                        <field name="to_phone" placeholder="Phone No." 
+                                attrs="{'readonly': [('state','!=','draft')]}" />
+                        <field name="customer_id" 
+                                attrs="{'readonly': [('state','!=','draft')]}" />
+                        <field name="to_address" placeholder="Address" 
+                                attrs="{'readonly': [('state','!=','draft')]}" /> 
+                        <field name="route_id" 
+                                attrs="{'readonly': [('state','!=','draft')]}" />
+                        <field name="to_parcel" placeholder="Parcel Name" 
+                                attrs="{'readonly': [('state','!=','draft')]}" />
+                        <field name="product_id" 
+                            attrs="{'invisible':[('route_id','=',False)],'readonly': [('state','!=','draft')]}"
+                            options="{'no_create': True}" />
+                        <label for="to_qty"/>
+                        <div class="o_row">
+                            <field name="to_qty" placeholder="Quantity" 
+                                    attrs="{'readonly': [('state','!=','draft')]}" />
+                            <field name="to_uom" placeholder="Unit of Measure" 
+                                    attrs="{'readonly': [('state','!=','draft')]}" />
+                        </div>
+                        <field name="service_id" 
+                            attrs="{'invisible':[('product_id','=',False)], 'readonly': [('state','!=','draft')]}"/>                        
+                    </group>
+                    <group colspan="4" col="4">
+                        <label for="to_total_weight"/>
+                        <div class="o_row">
+                            <field name="to_total_weight" 
+                                    attrs="{'readonly': [('state','!=','draft')]}" /><span>Kg</span>
+                        </div>
+                        <label for="to_total_volume"/>
+                        <div class="o_row">
+                            <field name="to_total_volume" 
+                                    attrs="{'readonly': [('state','!=','draft')]}" /><span>m3</span>
+                        </div>
+                    </group>
+                    <notebook>
+                        <page string="Order Line(s)" >
+                            <field name="entry_ids" nolabel='1' readonly="1" >
+                                <tree string="Entry Information">
+                                    <field name="origin_id" />
+                                    <field name="destination_id" />
+                                    <field name="distance" />
+                                    <field name="hour" />
+                                    <field name="actual_hour" />
+                                    <field name="state" />
+                                    <field name="notes" />
+                                    <field name="gps_tracking" />                                           
+                                </tree>
+                                <form string="Entry Information">
+                                    <group colspan="2" col="2">
+                                        <separator string="Transport Route" colspan="2" />
+                                        <field name="origin_id" />
+                                        <field name="destination_id" />
+                                    </group>
+                                    <group colspan="4" col="4">
+                                        <field name="distance" />
+                                        <field name="actual_distance" />
+                                        <field name="hour" />
+                                        <field name="actual_hour" />
+                                        <separator string="Detail Activity" colspan="4" />
+                                        <field name="start_time" placeholder="Start time of the truck on the road" />
+                                        <field name="start_loading" />
+                                        <field name="end_loading" />
+                                        <field name="start_unloading" />
+                                        <field name="end_unloading" />
+                                        <field name="gps_tracking" />
+                                        <field name="notes" />
+                                    </group>
+                                </form>
+                            </field>
+                            <field name="notes" class="oe_inline" placeholder="Setup default terms and conditions in your company settings."/>
+                            <div class="oe_clear"/>                         
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Transport Oder Sequence -->
+    <record id="transportation order sequence" model="ir.sequence">
+        <field name="name">Transportation Order</field>
+        <field name="code">transportation.order</field>
+        <field name="prefix">TO/%(month)s/%(y)s/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

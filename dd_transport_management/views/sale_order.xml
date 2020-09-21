@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+    <record id="ih_sale_order" model="ir.ui.view">
+        <field name="name">transport.sale_order</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="trans_order_id" />
+            </xpath>
+            <!-- <button name="action_quotation_send" position="before" >
+                <button name="action_verify" string="Verified" states="draft"
+                        class="oe_highlight" type="object" />
+                <button name="action_back_verify" string="Verified" states="verified"
+                        class="btn-primary" type="object" />
+                 <button name="action_approved" string="Approved" states="verified"
+                        class="oe_highlight" type="object" />
+            </button>
+            <button name="action_quotation_send" position="attributes">
+                <attribute name="states">verified,appr,sent,sale</attribute>
+            </button>
+            <button name="print_quotation" position="attributes">
+                <attribute name="states">verified,appr,sent,sale</attribute>
+            </button>
+            <button name="action_confirm" position="attributes">
+                <attribute name="states">appr,sent,sale</attribute>
+            </button>
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">draft,appr,sent,sale,done</attribute>
+            </field> -->
+        </field>
+    </record>
+  </data>
+</odoo>

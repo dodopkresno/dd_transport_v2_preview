@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Filter 1 --> 
+    <record id="transportation_entry_filter" model="ir.ui.view">
+        <field name="name">Transportation Entry Filter</field>
+        <field name="model">transportation.entry</field>
+        <field name="arch" type="xml">
+            <search string="Entry Filter">
+                <filter string="State"
+                    name="state"
+                    domain="[('state','!=','complete')]" />
+            </search>
+        </field>
+    </record>
+    <!-- Tree view for "transportation.entry" -->
+    <record id="transportation_entry_tree" model="ir.ui.view">
+        <field name="name">Transportation Entry Tree</field>
+        <field name="model">transportation.entry</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree create="false" string="Trans Order" >
+                <field name="service_name" />
+                <field name="vehicle_name" />
+                <field name="order_id" />
+                <field name="origin_id" />
+                <field name="destination_id" />
+                <field name="gps_tracking" />
+                <field name="notes" />                                                
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    <!-- Form view for "transportation.entry" -->
+    <record id="transportation_entry_form" model="ir.ui.view">
+        <field name="name">Transportation Entry Form</field>
+        <field name="model">transportation.entry</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="model_form" create="0" delete="1" edit="1">
+                <header>
+                    <button name="action_start" string="Start" states="draft" class="oe_highlight"
+                            type="object" />
+                    <button name="action_load" string="Loading" states="start" class="oe_highlight"
+                            type="object" />
+                    <button name="action_delivery" string="Delivery" states="onloading" class="oe_highlight" 
+                            type="object" />
+                    <button name="action_unload" string="Unloading" states="ondelivery" class="oe_highlight" 
+                            type="object" />
+                    <button name="action_complete" string="Complete" states="onunload" class="oe_highlight" 
+                            type="object" />                    
+                    <field name="state" widget="statusbar" readonly="1" statusbar_visible="start,onloading,ondelivery,onunload,complete"/>        
+                </header>
+                <sheet>
+                    <group colspan="2" col="2">
+                        <separator string="Information" colspan="2" />
+                        <field name="service_name" />
+                        <field name="vehicle_name" />
+                        <field name="order_id" />
+                        <separator string="Transport Route" colspan="2" />
+                        <field name="origin_id" />
+                        <field name="destination_id" />
+                    </group>
+                    <group colspan="4" col="4">
+                        <field name="distance" />
+                        <field name="hour" />
+                        <field name="actual_hour" 
+                                attrs="{'readonly':[('state','=','complete')]}" />
+                        <separator string="Detail Activity" colspan="4" />
+                        <field name="start_time" placeholder="Start time of the truck on the road" 
+                                attrs="{'readonly':[('state','in',('start','onloading','ondelivery','onunload','complete'))]}" />
+                        <field name="start_loading" 
+                                attrs="{'readonly':[('state','in',('onloading','ondelivery','onunload','complete'))]}" />
+                        <field name="end_loading" 
+                                attrs="{'readonly':[('state','in',('ondelivery','onunload','complete'))]}" />
+                        <field name="start_unloading" 
+                                attrs="{'readonly':[('state','in',('onunload','complete'))]}" />
+                        <field name="end_unloading" 
+                                attrs="{'readonly':[('state','=','complete')]}" />
+                        <field name="gps_tracking" />
+                        <field name="notes" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

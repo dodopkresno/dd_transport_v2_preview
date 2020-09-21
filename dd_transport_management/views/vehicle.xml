@@ -1,0 +1,39 @@
+<odoo>
+  <data>
+    <record id="ih_fleet_vehicle" model="ir.ui.view">
+        <field name="name">transport.fleet_vehicle</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <label for="max_weight" />
+                <div class="o_row">
+                    <field name="max_weight" /><span>Kg</span>
+                </div>
+                <label for="max_volume"/>
+                <div class="o_row">
+                    <field name="max_volume" /><span>m3</span>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='residual_value']" position="after">
+                <field name="partner_ref" />
+                <field name="is_service" />
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="ih_fleet_vehicle_filter" model="ir.ui.view">
+        <field name="name">transport.fleet_vehicle_filter</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_search" />
+        <field name="arch" type="xml">
+            <search string="All vehicles">
+                <filter string="Vehicle"
+                    name="service"
+                    domain="[('is_service','=',1)]"
+                    help="Vehicle as Services" />
+            </search>
+        </field>
+    </record>
+  </data>
+</odoo>

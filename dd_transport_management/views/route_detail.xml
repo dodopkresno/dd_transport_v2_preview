@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="route_detail_tree" model="ir.ui.view">
+        <field name="name">Route Detail Tree</field>
+        <field name="model">route.detail</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Route Detail"> 
+                <field name="origin" />
+                <field name="destination" />
+                <field name="distance" /> 
+                <field name="hour" widget="float_time" />
+            </tree>
+        </field>
+    </record>
+    <record id="route_detail_form" model="ir.ui.view">
+        <field name="name">Route Detail Form</field>
+        <field name="model">route.detail</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <form string="Route Location">
+                <sheet>
+                    <group col="4">
+                        <field name="origin" />
+                        <field name="destination" />
+                    </group>
+                    <group>
+                        <field name="distance" />
+                        <field name="hour" widget="float_time"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

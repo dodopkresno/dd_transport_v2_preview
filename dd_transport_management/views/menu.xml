@@ -1,0 +1,102 @@
+<odoo>
+  <data>
+    <!-- actions.act_window call in menu -->
+    <!-- Main window action for IH "fleet.vehicle" -->
+    <record id="action_vehicle_list" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Fleet Vehicle</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_type">form</field>
+        <field name="context">{"search_default_service":1}</field>
+        <field name="search_view_id" ref="fleet.fleet_vehicle_view_search" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add Vehicle
+            </p>
+            <p>Add Vehicle</p>
+        </field>
+    </record>
+    <!-- Main window action for "route.location" -->
+    <record id="action_route_location_act_window" model="ir.actions.act_window">
+        <field name="name">Route Location</field>
+        <field name="res_model">route.location</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add Location of the Route
+            </p>
+            <p> Add Location Route </p>
+        </field>
+    </record>
+    <!-- Main window action for "transportation.route" -->
+    <record id="action_transportation_route_act_window" model="ir.actions.act_window">
+        <field name="name">Transportation Route</field>
+        <field name="res_model">transportation.route</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add new Route
+            </p><p>
+                Add Transportation Route 
+            </p>
+        </field>
+    </record>
+    <!-- Main window action for "transportation.service" -->
+    <record id="action_transportation_service_act_window" model="ir.actions.act_window">
+        <field name="name">Transportation Service</field>
+        <field name="res_model">transportation.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state':1}</field> 
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add registration Transportation Service
+            </p><p>
+                Add Transportation Service
+            </p>
+        </field>
+    </record>
+    <!-- Main window action for "transportation.order" -->
+    <record id="action_transportation_order_act_window" model="ir.actions.act_window">
+        <field name="name">Transportation Order</field>
+        <field name="res_model">transportation.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state':1}</field> 
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add Transportation Order
+            </p><p>
+                Add Transportation Order
+            </p>
+        </field>
+    </record>
+    <!-- Main window action for "transportation.entry" -->
+    <record id="action_transportation_entry_act_window" model="ir.actions.act_window">
+        <field name="name">Transportation Entry</field>
+        <field name="res_model">transportation.entry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_state':1}</field> 
+    </record>
+    
+    <!-- top level menu -->
+    <menuitem id="main_transport" name="Transportation" />
+    <!-- transactional menu -->
+    <menuitem id="trx_transportation" name="Transportation" parent="main_transport" sequence="1" />
+    <!-- submenu transactional -->
+    <menuitem id="trx_transportation_service" name="Transportation Service" parent="trx_transportation" sequence="2" 
+            action="action_transportation_service_act_window" />
+    <menuitem id="trx_transportation_order" name="Transportation Order" parent="trx_transportation" sequence="3" 
+            action="action_transportation_order_act_window" />
+    <menuitem id="trx_transportation_entry" name="Transportation Entry" parent="trx_transportation" sequence="4" 
+            action="action_transportation_entry_act_window" />
+    <!-- configuration menu -->
+    <menuitem id="conf_transport" name="Configuration" parent="main_transport" sequence="10"/>
+    <!-- submenu configuration -->
+    <menuitem id="cfg_vehicle" name="Vehicle" parent="conf_transport" sequence="11" 
+            action="action_vehicle_list" />
+    <menuitem id="cfg_route_loc" name="Route Location" parent="conf_transport" sequence="12" 
+            action="action_route_location_act_window" />
+    <menuitem id="cfg_transportation_route" name="Route and Service Fees" parent="conf_transport" sequence="13" 
+            action="action_transportation_route_act_window"/>
+  </data>
+</odoo>

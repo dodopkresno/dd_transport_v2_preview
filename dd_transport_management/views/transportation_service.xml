@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Filter 1 --> 
+    <record id="transportation_service_filter" model="ir.ui.view">
+        <field name="name">Transportation Service Filter</field>
+        <field name="model">transportation.service</field>
+        <field name="arch" type="xml">
+            <search string="Transport Filter">
+                <filter string="State"
+                    name="state"
+                    domain="[('state','not in',('complete','cancel'))]" />
+            </search>
+        </field>
+    </record>
+    
+    <!-- Tree view for "transportation.service" -->
+    <record id="transportation_service_tree" model="ir.ui.view">
+        <field name="name">Transportation Service Tree</field>
+        <field name="model">transportation.service</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Trans Service" decoration-it="state == 'draft'" decoration-info="state == 'open'" decoration-success="state == 'ontrip'" decoration-bf="state == 'complete'" decoration-muted="state == 'cancel'">
+                <field name="name" />
+                <field name="vehicle_id" />
+                <field name="max_weight" />
+                <field name="max_volume" />
+                <field name="is_sourcing" />
+                <field name="util_weight" widget="progressbar" />
+                <field name="util_volume" widget="progressbar"/>                                                
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Form view for "transportation.service" -->
+    <record id="transportation_service_form" model="ir.ui.view">
+        <field name="name">Transportation Service Form</field>
+        <field name="model">transportation.service</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="model_form" create="1" delete="1" edit="1">
+                <header>
+                    <button name="action_open" string="Open" states="draft" class="btn-primary"
+                            type="object" />
+                    <button name="action_cancel" string="Cancel" class="fa fa-ban"
+                            states="draft,open"
+                            type="object" />
+                    <button name="update_utilization" string="Update Utilization"  class="btn-primary"
+                            states="open,reserve,ontrip,complete,cancel"
+                            type="object" />
+                    <button name="generate_vendor_order" string="Generate PO" states="reserve"
+                            attrs="{'invisible':[('is_sourcing','=',False)]}" 
+                            type="object" />
+                    <field name="state" widget="statusbar" readonly="1" statusbar_visible="open,reserve,ontrip,complete"/>        
+                </header>
+                <sheet>
+                    <div class="oe_right oe_button_box" style="width: 300px;" name="buttons">
+                        <button name='action_view_transport_order' class="oe_stat_button" type="object" icon="fa-truck" states="open,reserve,ontrip,complete">
+                            <field string="Orders" name="order_count" widget="statinfo" />
+                        </button>
+                        <button name='action_view_purchase_order' class="oe_stat_button" type="object" icon="fa-pencil-square-o" attrs="{'invisible':[('is_sourcing','=',False)]}">
+                            <field string="Purchase" name="po_count" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group colspan="4" col="4">
+                        <separator string="Transport Registration" colspan="4" />
+                        <field name="name" placeholder="Enter Trans. Ref. No" 
+                                attrs="{'readonly':[('state','not in','draft')]}" />
+                        <field name="vehicle_id" 
+                            attrs="{'readonly':[('state','not in', 'draft')]}" 
+                            domain="[('active','=', True),('is_service','=', True)]"
+                            options="{'no_create': True}" />
+                        <field name="lic_plate" 
+                            attrs="{'invisible':[('vehicle_id','=',False)]}" />
+                        <field name="driver_name" readonly="1" />
+                        <field name="max_weight" />
+                        <field name="max_volume" />
+                        <field name="util_weight" widget="progressbar" />
+                        <field name="util_volume" widget="progressbar"/> 
+                        <field name="is_sourcing" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

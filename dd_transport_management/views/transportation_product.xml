@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree view for "transportation.product" -->
+    <record id="transportation_product_tree" model="ir.ui.view">
+        <field name="name">Transportation Product Tree</field>
+        <field name="model">transportation.product</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Services Fee">
+                <field name="vehicle_type_tag_id" />
+                <field name="vehicle_owner_tag_id" />
+                <field name="transport_fees" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for "transportation.product" -->
+    <record id="transportation_product_form" model="ir.ui.view">
+        <field name="name">Transportation Product Form</field>
+        <field name="model">transportation.product</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Services Fee">
+                <sheet>
+                    <group>
+                        <field name="vehicle_type_tag_id" />
+                        <field name="vehicle_owner_tag_id" />
+                    </group>
+                    <group>
+                        <field name="product_id" />
+                        <field name="transport_fees" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
